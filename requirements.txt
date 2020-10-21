@@ -1,4 +1,6 @@
+comtypes==1.1.7
 numpy==1.19.2
 opencv-python==4.4.0.44
+PyPDF2==1.26.0
 PySide2==5.15.1
 shiboken2==5.15.1
