@@ -60,8 +60,33 @@
     <property name="bottomMargin">
      <number>0</number>
     </property>
+    <item row="1" column="0">
+     <widget class="QWidget" name="side_header" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>150</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>150</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">image: url(:/side_headers/side_header_camera_setup.png);</string>
+      </property>
+     </widget>
+    </item>
     <item row="0" column="0" colspan="2">
-     <widget class="QWidget" name="widget" native="true">
+     <widget class="QWidget" name="header" native="true">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
         <horstretch>0</horstretch>
@@ -88,7 +113,7 @@
         <number>0</number>
        </property>
        <item row="0" column="0">
-        <widget class="QWidget" name="widget_4" native="true">
+        <widget class="QWidget" name="logo" native="true">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
            <horstretch>0</horstretch>
@@ -113,31 +138,61 @@
      </widget>
     </item>
     <item row="1" column="1">
-     <widget class="QWidget" name="widget_3" native="true"/>
-    </item>
-    <item row="1" column="0">
-     <widget class="QWidget" name="widget_2" native="true">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>150</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>150</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">image: url(:/side_headers/side_header_camera_setup.png);</string>
-      </property>
+     <widget class="QWidget" name="camera_setup" native="true">
+      <widget class="QWidget" name="camera_container" native="true">
+       <property name="geometry">
+        <rect>
+         <x>230</x>
+         <y>30</y>
+         <width>531</width>
+         <height>411</height>
+        </rect>
+       </property>
+       <widget class="QLabel" name="camera_feed_label">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>121</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>League Gothic Italic</family>
+          <pointsize>18</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: white;</string>
+        </property>
+        <property name="text">
+         <string>CAMERA FEED</string>
+        </property>
+        <property name="scaledContents">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="camera_feed_viewer">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>80</y>
+          <width>431</width>
+          <height>191</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: #333333;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="scaledContents">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </widget>
      </widget>
     </item>
    </layout>
