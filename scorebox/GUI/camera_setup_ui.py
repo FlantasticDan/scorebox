@@ -26,7 +26,48 @@ class Ui_MainWindow(object):
         MainWindow.setSizePolicy(sizePolicy)
         MainWindow.setMinimumSize(QSize(1280, 720))
         MainWindow.setBaseSize(QSize(1280, 720))
-        MainWindow.setStyleSheet(u"background-color: #1a1a1a;")
+        MainWindow.setStyleSheet(u"QWidget{\n"
+"background-color: #1a1a1a;\n"
+"}\n"
+"\n"
+"QPushButton{\n"
+"background-color: #32a849;\n"
+"border: 0px;\n"
+"outline: 5px;\n"
+"color: white;\n"
+"}\n"
+"\n"
+"QPushButton:hover{\n"
+"background-color:#63cf77;\n"
+"}\n"
+"\n"
+"QPushButton:!checked{\n"
+"background-color: rgba(0,0,0,0);\n"
+"border: 3px solid  #32a849;\n"
+"}\n"
+"\n"
+"QPushButton:!checked:hover{\n"
+"background-color: rgba(0,0,0,0);\n"
+"border: 3px solid  #63cf77;\n"
+"}\n"
+"\n"
+"QComboBox {\n"
+"    background-color: rgba(0,0,0,0);\n"
+"	border: 3px solid #6e6e6e;\n"
+"	padding-left: 10px;\n"
+"	text-align: center center;\n"
+"	color: white;\n"
+"}\n"
+"\n"
+"QComboBox QAbstractItemView {\n"
+"	background-color: #6e6e6e;\n"
+"	border: 3px solid #6e6e6e;\n"
+"	text-align: center center;\n"
+"	color: white;\n"
+"\n"
+"	outline: none;\n"
+"	selection-background-color: #3b3b3b;\n"
+"}")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         sizePolicy1 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
@@ -83,7 +124,7 @@ class Ui_MainWindow(object):
         self.camera_setup.setObjectName(u"camera_setup")
         self.camera_container = QWidget(self.camera_setup)
         self.camera_container.setObjectName(u"camera_container")
-        self.camera_container.setGeometry(QRect(230, 30, 531, 411))
+        self.camera_container.setGeometry(QRect(40, 40, 531, 411))
         self.camera_feed_label = QLabel(self.camera_container)
         self.camera_feed_label.setObjectName(u"camera_feed_label")
         self.camera_feed_label.setGeometry(QRect(0, 0, 121, 41))
@@ -95,15 +136,41 @@ class Ui_MainWindow(object):
         self.camera_feed_label.setScaledContents(False)
         self.camera_feed_viewer = QLabel(self.camera_container)
         self.camera_feed_viewer.setObjectName(u"camera_feed_viewer")
-        self.camera_feed_viewer.setGeometry(QRect(0, 80, 431, 191))
+        self.camera_feed_viewer.setGeometry(QRect(0, 60, 451, 311))
         self.camera_feed_viewer.setStyleSheet(u"background-color: #333333;")
         self.camera_feed_viewer.setScaledContents(False)
+        self.pushButton = QPushButton(self.camera_container)
+        self.pushButton.setObjectName(u"pushButton")
+        self.pushButton.setGeometry(QRect(80, 370, 121, 41))
+        font1 = QFont()
+        font1.setFamily(u"League Gothic")
+        font1.setPointSize(18)
+        self.pushButton.setFont(font1)
+        self.pushButton.setCheckable(True)
+        self.pushButton.setChecked(False)
+        self.pushButton.setFlat(False)
+        self.pushButton_2 = QPushButton(self.camera_container)
+        self.pushButton_2.setObjectName(u"pushButton_2")
+        self.pushButton_2.setGeometry(QRect(220, 370, 121, 41))
+        self.pushButton_2.setFont(font1)
+        self.pushButton_2.setCheckable(True)
+        self.pushButton_2.setChecked(True)
+        self.pushButton_2.setFlat(False)
+        self.comboBox = QComboBox(self.camera_container)
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.setObjectName(u"comboBox")
+        self.comboBox.setGeometry(QRect(100, 260, 241, 41))
+        self.comboBox.setFont(font1)
 
         self.gridLayout.addWidget(self.camera_setup, 1, 1, 1, 1)
 
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
+
+        self.comboBox.setCurrentIndex(0)
+
 
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
@@ -112,5 +179,10 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"ScoreBox", None))
         self.camera_feed_label.setText(QCoreApplication.translate("MainWindow", u"CAMERA FEED", None))
         self.camera_feed_viewer.setText("")
+        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"720p", None))
+        self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"1080p", None))
+        self.comboBox.setItemText(0, QCoreApplication.translate("MainWindow", u"webcam", None))
+        self.comboBox.setItemText(1, QCoreApplication.translate("MainWindow", u"dslr", None))
+
     # retranslateUi
 

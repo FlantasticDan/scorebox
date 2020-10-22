@@ -32,7 +32,48 @@
    <string>ScoreBox</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: #1a1a1a;</string>
+   <string notr="true">QWidget{
+background-color: #1a1a1a;
+}
+
+QPushButton{
+background-color: #32a849;
+border: 0px;
+outline: 5px;
+color: white;
+}
+
+QPushButton:hover{
+background-color:#63cf77;
+}
+
+QPushButton:!checked{
+background-color: rgba(0,0,0,0);
+border: 3px solid  #32a849;
+}
+
+QPushButton:!checked:hover{
+background-color: rgba(0,0,0,0);
+border: 3px solid  #63cf77;
+}
+
+QComboBox {
+    background-color: rgba(0,0,0,0);
+	border: 3px solid #6e6e6e;
+	padding-left: 10px;
+	text-align: center center;
+	color: white;
+}
+
+QComboBox QAbstractItemView {
+	background-color: #6e6e6e;
+	border: 3px solid #6e6e6e;
+	text-align: center center;
+	color: white;
+
+	outline: none;
+	selection-background-color: #3b3b3b;
+}</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="sizePolicy">
@@ -142,8 +183,8 @@
       <widget class="QWidget" name="camera_container" native="true">
        <property name="geometry">
         <rect>
-         <x>230</x>
-         <y>30</y>
+         <x>40</x>
+         <y>40</y>
          <width>531</width>
          <height>411</height>
         </rect>
@@ -177,9 +218,9 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>80</y>
-          <width>431</width>
-          <height>191</height>
+          <y>60</y>
+          <width>451</width>
+          <height>311</height>
          </rect>
         </property>
         <property name="styleSheet">
@@ -191,6 +232,91 @@
         <property name="scaledContents">
          <bool>false</bool>
         </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton">
+        <property name="geometry">
+         <rect>
+          <x>80</x>
+          <y>370</y>
+          <width>121</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>League Gothic</family>
+          <pointsize>18</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>720p</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="pushButton_2">
+        <property name="geometry">
+         <rect>
+          <x>220</x>
+          <y>370</y>
+          <width>121</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>League Gothic</family>
+          <pointsize>18</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>1080p</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="comboBox">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>260</y>
+          <width>241</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>League Gothic</family>
+          <pointsize>18</pointsize>
+         </font>
+        </property>
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <item>
+         <property name="text">
+          <string>webcam</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>dslr</string>
+         </property>
+        </item>
        </widget>
       </widget>
      </widget>

@@ -9,9 +9,12 @@ class CameraThread(QThread):
     frame_update = Signal(QImage)
 
     def run(self):
+        print("Capture Triggered")
         cap = cv2.VideoCapture(1)
         cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
         cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+        cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
+        print("Capture Started")
 
         while True:
             ret, frame = cap.read()
