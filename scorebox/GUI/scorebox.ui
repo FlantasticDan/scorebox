@@ -293,18 +293,8 @@ QLabel{
               </font>
              </property>
              <property name="currentIndex">
-              <number>0</number>
+              <number>-1</number>
              </property>
-             <item>
-              <property name="text">
-               <string>webcam</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>dslr</string>
-              </property>
-             </item>
             </widget>
             <widget class="QPushButton" name="fhd_toggle">
              <property name="geometry">

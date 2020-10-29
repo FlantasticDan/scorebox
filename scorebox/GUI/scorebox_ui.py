@@ -168,8 +168,6 @@ class Ui_MainWindow(object):
         self.camera_settings_label.setStyleSheet(u"color: white;")
         self.camera_settings_label.setAlignment(Qt.AlignCenter)
         self.input_combo_box = QComboBox(self.camera_settings_container)
-        self.input_combo_box.addItem("")
-        self.input_combo_box.addItem("")
         self.input_combo_box.setObjectName(u"input_combo_box")
         self.input_combo_box.setGeometry(QRect(0, 110, 351, 35))
         self.input_combo_box.setFont(font2)
@@ -253,7 +251,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
 
         self.camera_stack.setCurrentIndex(0)
-        self.input_combo_box.setCurrentIndex(0)
+        self.input_combo_box.setCurrentIndex(-1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -266,9 +264,6 @@ class Ui_MainWindow(object):
         self.hd_toggle.setText(QCoreApplication.translate("MainWindow", u"720p", None))
         self.hd_toggle.setProperty("pushButtonType", QCoreApplication.translate("MainWindow", u"radio", None))
         self.camera_settings_label.setText(QCoreApplication.translate("MainWindow", u"CAMERA  INPUT  SETTINGS", None))
-        self.input_combo_box.setItemText(0, QCoreApplication.translate("MainWindow", u"webcam", None))
-        self.input_combo_box.setItemText(1, QCoreApplication.translate("MainWindow", u"dslr", None))
-
         self.fhd_toggle.setText(QCoreApplication.translate("MainWindow", u"1080p", None))
         self.fhd_toggle.setProperty("pushButtonType", QCoreApplication.translate("MainWindow", u"radio", None))
         self.camera_feed_viewer.setText("")
