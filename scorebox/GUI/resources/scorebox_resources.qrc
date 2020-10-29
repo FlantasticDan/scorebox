@@ -2,6 +2,9 @@
   <qresource prefix="side_headers">
     <file>side_header_camera_setup.png</file>
   </qresource>
+  <qresource prefix="icons">
+    <file>down-arrow.png</file>
+  </qresource>
   <qresource prefix="logos">
     <file>scorebox_logo_crop_white.png</file>
   </qresource>
