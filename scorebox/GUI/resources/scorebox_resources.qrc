@@ -2,6 +2,13 @@
   <qresource prefix="side_headers">
     <file>side_header_camera_setup.png</file>
   </qresource>
+  <qresource prefix="fonts">
+    <file>fonts/LeagueGothic-CondensedItalic.otf</file>
+    <file>fonts/LeagueGothic-CondensedRegular.otf</file>
+    <file>fonts/LeagueGothic-Italic.otf</file>
+    <file>fonts/LeagueGothic-Regular.otf</file>
+    <file>fonts/Staatliches-Regular.ttf</file>
+  </qresource>
   <qresource prefix="icons">
     <file>down-arrow.png</file>
   </qresource>

@@ -3,13 +3,15 @@ import GUI.resource_path
 import cv2
 from PySide2.QtWidgets import QApplication, QMainWindow
 from PySide2.QtCore import Qt, QThread, Signal, Slot
-from PySide2.QtGui import QImage, QPixmap
+from PySide2.QtGui import QImage, QPixmap, QFontDatabase
 from GUI.scorebox_ui import Ui_MainWindow
 from camera_setup import CameraSetup
 
 class ScoreBox(QMainWindow):
     def __init__(self):
         super(ScoreBox, self).__init__()
+
+        self.fonts()
 
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
@@ -22,6 +24,13 @@ class ScoreBox(QMainWindow):
         self.ui.hd_toggle.setStyle(self.ui.hd_toggle.style())
         self.ui.fhd_toggle.setProperty("pushButtonType", "radio")
         self.ui.fhd_toggle.setStyle(self.ui.fhd_toggle.style())
+
+    def fonts(self):
+        QFontDatabase.addApplicationFont(u':/fonts/fonts/LeagueGothic-Regular.otf')
+        QFontDatabase.addApplicationFont(u':/fonts/fonts/LeagueGothic-Italic.otf')
+        QFontDatabase.addApplicationFont(u':/fonts/fonts/LeagueGothic-CondensedRegular.otf')
+        QFontDatabase.addApplicationFont(u':/fonts/fonts/LeagueGothic-CondensedItalic.otf')
+        QFontDatabase.addApplicationFont(u':/fonts/fonts/Staatliches-Regular.ttf')
 
 if __name__ == '__main__':
 
