@@ -1,5 +1,10 @@
 from tkinter import *
 from tkinter import ttk
+from threading import Thread
+import time
+
+from PIL import Image
+from PIL import ImageTk
 
 from camera_manager import list_camera_devices
 from camera_manager import CameraManagaer
@@ -10,7 +15,12 @@ class GUI:
         self.input_index = None
 
         self.user_select_input_source()
-        print(self.input_index)
+
+        self.process_thread = None
+        self.camera_manager = CameraManagaer(self.input_index)
+        self.stream_img = None
+
+        self.show_stream()
 
     def user_select_input_source(self):
         self.root = Tk()
@@ -32,5 +42,34 @@ class GUI:
         if index >= 0:
             self.input_index = index
             self.root.destroy()
+
+    def show_stream(self):
+        self.root = Tk()
+
+        stream_frame = Frame(self.root)
+        stream_frame.pack()
+        time.sleep(4)
+        image = Image.fromarray(self.camera_manager.frame)
+        image = ImageTk.PhotoImage(image)
+        self.stream_img = Label(stream_frame, image=image)
+        self.stream_img.image = image
+        self.stream_img.pack()
+
+        self.start_process_thread()
+
+        self.root.mainloop()
+
+    def process_frame(self):
+        while True:
+            if self.camera_manager.frame is not None:
+                image = Image.fromarray(self.camera_manager.frame)
+                image = ImageTk.PhotoImage(image)
+                self.stream_img.configure(image=image)
+                self.stream_img.image = image
+
+    def start_process_thread(self):
+        self.process_thread = Thread(target=self.process_frame)
+        self.process_thread.start()
+
 
 GUI()

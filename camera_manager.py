@@ -22,6 +22,8 @@ class CameraManagaer:
         self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, self.capture_width)
         self.capture.set(cv2.CAP_PROP_FRAME_HEIGHT, self.capture_height)
 
+        self.start_capture()
+
     def change_resolution(self, width, height):
         self.capture_width = width
         self.capture_height = height
