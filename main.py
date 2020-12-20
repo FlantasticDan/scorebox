@@ -48,14 +48,10 @@ class GUI:
 
         stream_frame = Frame(self.root)
         stream_frame.pack()
-        time.sleep(4)
-        image = Image.fromarray(self.camera_manager.frame)
-        image = ImageTk.PhotoImage(image)
-        self.stream_img = Label(stream_frame, image=image)
-        self.stream_img.image = image
-        self.stream_img.pack()
 
-        self.start_process_thread()
+        self.prepare_process_thread(stream_frame)
+
+        self.stream_img.bind('<Button 1>', self.get_clicked_position)
 
         self.root.mainloop()
 
@@ -71,5 +67,17 @@ class GUI:
         self.process_thread = Thread(target=self.process_frame)
         self.process_thread.start()
 
+    def prepare_process_thread(self, parent):
+        while self.camera_manager.frame is None:
+            time.sleep(0.1)
+        image = Image.fromarray(self.camera_manager.frame)
+        image = ImageTk.PhotoImage(image)
+        self.stream_img = Label(parent, image=image)
+        self.stream_img.image = image
+        self.stream_img.pack()
+        self.start_process_thread()
+
+    def get_clicked_position(self, event):
+        print(f'{event.x} {event.y}')
 
 GUI()
