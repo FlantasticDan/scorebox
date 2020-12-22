@@ -7,17 +7,20 @@ from PIL import Image
 from PIL import ImageTk
 
 from camera_manager import list_camera_devices
-from camera_manager import CameraManagaer
+from camera_manager import CameraManager
+from scoreboard_manager import ScoreboardManager
 
 class GUI:
     def __init__(self):
         self.root = None
         self.input_index = None
 
+        self.scoreboard = None
+
         self.user_select_input_source()
 
         self.process_thread = None
-        self.camera_manager = CameraManagaer(self.input_index)
+        self.camera_manager = CameraManager(self.input_index)
         self.stream_img = None
 
         self.show_stream()
@@ -46,12 +49,21 @@ class GUI:
     def show_stream(self):
         self.root = Tk()
 
+        selection_frame = Frame(self.root)
+        selection_frame.pack()
+
+        self.corner_pin = list()
+        instructions = Label(selection_frame, text="Click the scoreboard's corners in a clockwise order starting with the top left.")
+        instructions.pack()
+
         stream_frame = Frame(self.root)
         stream_frame.pack()
 
+
+
         self.prepare_process_thread(stream_frame)
 
-        self.stream_img.bind('<Button 1>', self.get_clicked_position)
+        self.stream_img.bind('<Button 1>', self.update_corner_pin)
 
         self.root.mainloop()
 
@@ -79,5 +91,12 @@ class GUI:
 
     def get_clicked_position(self, event):
         print(f'{event.x} {event.y}')
+
+    def update_corner_pin(self, event):
+        self.corner_pin.append((event.x, event.y))
+        if len(self.corner_pin) == 4:
+            print(self.corner_pin)
+            self.scoreboard = ScoreboardManager(self.camera_manager, self.corner_pin)
+            self.corner_pin = list()
 
 GUI()
