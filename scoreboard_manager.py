@@ -1,5 +1,6 @@
 from typing import List, Tuple
 from math import sqrt
+from threading import Thread
 
 import numpy as np
 import cv2
@@ -14,15 +15,43 @@ class ScoreboardManager:
 
         self.aspect_ratio: int = None
         self.dimensions: Tuple[int, int] = None
+        self.scoreboard_corners: List[Tuple[int, int]] = list()
+        self.transform_matrix = None
+
+        self.frame = None
+        self.thread = None
 
         self.calculate_scoreboard_dimensions()
+
+        self.start_frame_processing()
 
     def calculate_scoreboard_dimensions(self):
         self.aspect_ratio = get_aspect_ratio(self.corner_pin)
         self.dimensions = get_dimensions(self.corner_pin, self.aspect_ratio)
-        
-        print(self.dimensions)
 
+        print(f'Scoreboard Dimensions: {self.dimensions}')
+
+        scoreboard_corners = list()
+        scoreboard_corners.append((0, 0))
+        scoreboard_corners.append((self.dimensions[0] - 1, 0))
+        scoreboard_corners.append((self.dimensions[0] - 1, self.dimensions[1] - 1))
+        scoreboard_corners.append((0, self.dimensions[1] - 1))
+        self.scoreboard_corners = scoreboard_corners
+
+        src = np.array(self.corner_pin, dtype = "float32")
+        dest = np.array(self.scoreboard_corners, dtype = "float32")
+        self.transform_matrix = cv2.getPerspectiveTransform(src, dest)
+
+        print(f'Scoreboard Transformation Matrix: {self.transform_matrix}')
+
+    def process_frame_from_buffer(self):
+        while True:
+            self.frame = cv2.warpPerspective(self.source.frame, self.transform_matrix, self.dimensions)
+
+    def start_frame_processing(self):
+        self.thread = Thread(target=self.process_frame_from_buffer, daemon=True)
+        self.thread.start()
+        print('Perspective Warp Thread Started')
 
 def get_dimensions(corner_pin: List[Tuple[int, int]], aspect_ratio: int) -> Tuple[int, int]:
     '''
@@ -43,7 +72,7 @@ def get_dimensions(corner_pin: List[Tuple[int, int]], aspect_ratio: int) -> Tupl
     else:
         width = horizontal
         height = int(width / aspect_ratio)
-    
+
     return (width, height)
 
 def get_line_length(point_a: Tuple[int, int], point_b: Tuple[int, int]) -> int:
