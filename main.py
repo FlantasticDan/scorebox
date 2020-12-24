@@ -1,127 +1,80 @@
-from tkinter import *
-from tkinter import ttk
-from threading import Thread
-import time
+import sys
+
+from PySide6.QtCore import Qt, QMargins
+from PySide6.QtGui import QPixmap, QFontDatabase
+from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QFrame, QLabel
 
 from PIL import Image
-from PIL import ImageTk
 
 from camera_manager import list_camera_devices
 from camera_manager import CameraManager
 from scoreboard_manager import ScoreboardManager
 
-class GUI:
+import styles
+
+class GUI(QWidget):
     def __init__(self):
-        self.root = None
-        self.input_index = None
+        QWidget.__init__(self)
 
-        self.scoreboard: ScoreboardManager = None
+        self.setGeometry(0, 0, 1280, 960)
+        self.setWindowTitle('ScoreBox')
 
-        self.user_select_input_source()
+        self.setStyleSheet(styles.main)
 
-        self.process_thread = None
-        self.processing = True
-        self.camera_manager = CameraManager(self.input_index)
-        self.stream_img = None
+        self.header = Header()
+        self.stream = Stream()
+        self.interactive = Interactive()
 
-        self.process_target = self.camera_manager
+        self.layout = QVBoxLayout(self)
+        self.layout.addWidget(self.header)
+        self.layout.addWidget(self.stream)
+        self.layout.addWidget(self.interactive)
+        self.layout.setContentsMargins(QMargins(0,0,0,0))
 
-        self.show_stream()
-        # self.process_thread.join()
-        # self.root.destroy()
-        self.show_scoreboard()
+        self.show()
 
-    def user_select_input_source(self):
-        self.root = Tk()
-        input_select_frame = Frame(self.root)
-        input_select_frame.pack()
+class Header(QFrame):
+    def __init__(self):
+        QFrame.__init__(self)
 
-        input_combo = ttk.Combobox(input_select_frame, values=list_camera_devices(),
-                                   state='readonly', width=30, justify='center')
-        input_combo.set("Select Input")
-        input_combo.pack(padx=5, pady=5)
+        self.setMaximumHeight(75)
+        self.setStyleSheet(styles.header)
 
-        input_button = Button(input_select_frame, text="Confirm Input", relief=GROOVE, bd=3,
-                              command=lambda:self.user_selected_input_source(input_combo.current()))
-        input_button.pack(padx=5, pady=5)
+        self.logo = QPixmap(r'assets\scorebox_logo_crop_white.png')
+        self.logo = self.logo.scaledToHeight(self.height(), Qt.TransformationMode.SmoothTransformation)
+        self.logo_label = QLabel()
+        self.logo_label.setPixmap(self.logo)
 
-        self.root.mainloop()
+        self.header_title = QLabel("Camera Setup")
+        self.header_title.setStyleSheet(styles.header_label)
 
-    def user_selected_input_source(self, index):
-        if index >= 0:
-            self.input_index = index
-            self.root.destroy()
+        self.layout = QHBoxLayout(self)
+        self.layout.addWidget(self.logo_label)
+        self.layout.addWidget(self.header_title)
 
-    def show_stream(self):
-        self.root = Tk()
+class Stream(QFrame):
+    def __init__(self):
+        QFrame.__init__(self)
 
-        selection_frame = Frame(self.root)
-        selection_frame.pack()
+        self.setStyleSheet('background-color: green;')
 
-        self.corner_pin = list()
-        instructions = Label(selection_frame, text="Click the scoreboard's corners in a clockwise order starting with the top left.")
-        instructions.pack()
+class Interactive(QFrame):
+    def __init__(self):
+        QFrame.__init__(self)
 
-        self.stream_frame = Frame(self.root)
-        self.stream_frame.pack()
+        self.setStyleSheet('background-color: blue;')
 
-        self.prepare_process_thread(self.stream_frame)
+if __name__ == '__main__':
+    QApplication.setAttribute(Qt.ApplicationAttribute.AA_EnableHighDpiScaling, True)
 
-        self.stream_img.bind('<Button 1>', self.update_corner_pin)
+    app = QApplication()
 
-        self.root.mainloop()
+    QFontDatabase.addApplicationFont(r'assets\LeagueGothic-CondensedItalic.otf')
+    QFontDatabase.addApplicationFont(r'assets\LeagueGothic-CondensedRegular.otf')
+    QFontDatabase.addApplicationFont(r'assets\LeagueGothic-Italic.otf')
+    QFontDatabase.addApplicationFont(r'assets\LeagueGothic-Regular.otf')
+    QFontDatabase.addApplicationFont(r'assets\Staatliches-Regular.ttf')
 
-    def process_frame(self):
-        while self.processing:
-            if self.process_target.frame is not None:
-                image = Image.fromarray(self.process_target.frame)
-                image = ImageTk.PhotoImage(image)
-                self.stream_img.configure(image=image)
-                self.stream_img.image = image
-        print("Process Thread Exited")
+    gui = GUI()
 
-    def start_process_thread(self):
-        self.process_thread = Thread(target=self.process_frame, daemon=False)
-        self.process_thread.start()
-        print('Process Thread Started')
-
-    def prepare_process_thread(self, parent):
-        while self.process_target.frame is None:
-            time.sleep(0.1)
-        image = Image.fromarray(self.process_target.frame)
-        image = ImageTk.PhotoImage(image)
-        self.stream_img = Label(parent, image=image)
-        self.stream_img.image = image
-        self.stream_img.pack()
-        self.start_process_thread()
-
-    def update_corner_pin(self, event):
-        self.corner_pin.append((event.x, event.y))
-        if len(self.corner_pin) == 4:
-            print(f'Scoreboard Corners: {self.corner_pin}')
-            self.scoreboard = ScoreboardManager(self.camera_manager, self.corner_pin)
-            self.process_target = self.scoreboard
-
-    def show_scoreboard(self):
-        print("Showing Scoreboard")
-        self.root = Tk()
-
-        scoreboard_frame = Frame(self.root)
-        scoreboard_frame.pack()
-
-        self.corner_pin = list()
-        instructions = Label(scoreboard_frame, text="Scoreboard View")
-        instructions.pack()
-
-        self.stream_frame = Frame(self.root)
-        self.stream_frame.pack()
-
-        # self.process_thread.join()
-        self.process_target = self.scoreboard
-        # self.processing = True
-        # self.prepare_process_thread(self.stream_frame)
-
-        self.root.mainloop()
-
-
-GUI()
+    sys.exit(app.exec_())
