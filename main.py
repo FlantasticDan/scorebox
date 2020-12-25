@@ -3,13 +3,15 @@ import functools
 from threading import Thread
 
 from PySide6.QtCore import Qt, QMargins, Signal, Slot, QObject
-from PySide6.QtGui import QPixmap, QFontDatabase, QImage
+from PySide6.QtGui import QPixmap, QFontDatabase, QImage, QMouseEvent
 from PySide6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QFrame, QLabel, QPushButton, QSizePolicy
 
 import cv2
 
 from camera_manager import list_camera_devices
 from camera_manager import CameraManager
+
+from scoreboard_manager import normalize
 from scoreboard_manager import ScoreboardManager
 
 import styles
@@ -20,7 +22,8 @@ class GUI(QWidget):
 
         self.source = -1
 
-        self.camera_manager = None
+        self.camera_manager: CameraManager = None
+        self.scoreboard_manager: ScoreboardManager = None
 
         self.setGeometry(0, 0, 1280, 960)
         self.setWindowTitle('ScoreBox')
@@ -28,7 +31,7 @@ class GUI(QWidget):
         self.setStyleSheet(styles.main)
 
         self.header = Header()
-        self.stream = Stream()
+        self.stream = Stream(self)
         self.interactive = Interactive(self)
 
         self.layout = QVBoxLayout(self)
@@ -43,7 +46,10 @@ class GUI(QWidget):
         self.source = source
         self.camera_manager = CameraManager(self.source)
         self.stream.attach_camera_manager(self.camera_manager)
-
+    
+    def scoreboard_identified(self, corner_pin):
+        self.scoreboard_manager = ScoreboardManager(self.camera_manager, corner_pin)
+        self.stream.attach_scoreboard_manager(self.scoreboard_manager)
 
 class Header(QFrame):
     def __init__(self):
@@ -66,11 +72,16 @@ class Header(QFrame):
         self.layout.addWidget(self.header_title)
 
 class Stream(QFrame):
-    def __init__(self):
+    def __init__(self, gui_parent: GUI):
         QFrame.__init__(self)
+
+        self.gui = gui_parent
 
         self.camera_manager: CameraManager = None
         self.scoreboard_manager: ScoreboardManager = None
+
+        self.click_target = list()
+        self.phase = None
 
         self.frame_source = None
         self.frame_update_thread: Thread = None
@@ -78,6 +89,7 @@ class Stream(QFrame):
 
         self.stream_viewer = QLabel()
         self.stream_viewer.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        self.stream_viewer.mousePressEvent = self.mouse_click_handler
 
         self.layout = QHBoxLayout(self)
         self.layout.setAlignment(Qt.AlignCenter)
@@ -92,10 +104,14 @@ class Stream(QFrame):
 
     def attach_camera_manager(self, camera_manager: CameraManager):
         self.camera_manager = camera_manager
+
         self.frame_source = self.camera_manager
         self.frame_signal.connect(self.draw_updated_frame)
         self.frame_update_thread = Thread(target=self.update_frame)
         self.frame_update_thread.start()
+
+        self.click_target = list()
+        self.phase = 'Scoreboard Corner Pin'
 
     def update_frame(self):
         while True:
@@ -106,11 +122,27 @@ class Stream(QFrame):
                 image = QImage(rgb_image.data, width, height, bytes_per_line, QImage.Format_RGB888)
                 image = image.scaled(self.width() - 20, self.height() - 20, Qt.KeepAspectRatio)
                 self.frame_signal.emit(image.copy())
-        print('EXITING')
 
     @Slot(QImage)
     def draw_updated_frame(self, new_frame: QImage):
         self.stream_viewer.setPixmap(QPixmap.fromImage(new_frame))
+
+    def mouse_click_handler(self, mouse: QMouseEvent):
+        geo = self.stream_viewer.geometry()
+        x = normalize(mouse.x(), geo.width(), 1280)
+        y = normalize(mouse.y(), geo.height(), 720)
+        click = (x, y)
+
+        self.click_target.append(click)
+
+        if self.phase == 'Scoreboard Corner Pin' and len(self.click_target) == 4:
+            self.gui.scoreboard_identified(self.click_target)
+            self.click_target = list()
+            self.phase = ''
+
+    def attach_scoreboard_manager(self, scoreboard_manager: ScoreboardManager):
+        self.scoreboard_manager = scoreboard_manager
+        self.frame_source = self.scoreboard_manager
 
 class Interactive(QFrame):
     def __init__(self, gui_parent: GUI):

@@ -87,7 +87,7 @@ def get_line_length(point_a: Tuple[int, int], point_b: Tuple[int, int]) -> int:
 def sqr(value: int) -> int:
     return value * value
 
-def get_aspect_ratio(corner_pin: List[Tuple[int, int]]) -> int:
+def get_aspect_ratio(corner_pin: List[Tuple[int, int]], width: int=1280, height: int=720) -> int:
     '''
     Given four points (x,y) of a rectangle in Top Left, Top Right, Bottom Right, Bottom Left order,
     estimate the undistored rectangle's aspect ratio.
@@ -111,8 +111,8 @@ def get_aspect_ratio(corner_pin: List[Tuple[int, int]]) -> int:
     m4x = corner_pin[1][0]
     m4y = corner_pin[1][1]
 
-    u0 = 1280 / 2
-    v0 = 720 / 2
+    u0 = width / 2
+    v0 = height / 2
 
     m1x = m1x - u0
     m1y = m1y - v0
@@ -137,3 +137,7 @@ def get_aspect_ratio(corner_pin: List[Tuple[int, int]]) -> int:
     )
 
     return aspect_ratio
+
+def normalize(position: int, reference: int, output: int) -> int:
+    '''Normalize Widget Frame of Reference to Camera Resolution'''
+    return int((output * position) / reference)
