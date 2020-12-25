@@ -18,7 +18,7 @@ header = f'''\
 
 instructions = f'''\
     font-family: "Roboto";
-    font-size: 20pt;
+    font-size: 16pt;
     color: white;
 '''
 buttons = f'''\
