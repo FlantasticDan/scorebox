@@ -128,17 +128,18 @@ class Stream(QFrame):
         self.stream_viewer.setPixmap(QPixmap.fromImage(new_frame))
 
     def mouse_click_handler(self, mouse: QMouseEvent):
-        geo = self.stream_viewer.geometry()
-        x = normalize(mouse.x(), geo.width(), 1280)
-        y = normalize(mouse.y(), geo.height(), 720)
-        click = (x, y)
+        if self.phase == 'Scoreboard Corner Pin':
+            geo = self.stream_viewer.geometry()
+            x = normalize(mouse.x(), geo.width(), self.camera_manager.capture_width)
+            y = normalize(mouse.y(), geo.height(), self.camera_manager.capture_height)
+            click = (x, y)
 
-        self.click_target.append(click)
+            self.click_target.append(click)
 
-        if self.phase == 'Scoreboard Corner Pin' and len(self.click_target) == 4:
-            self.gui.scoreboard_identified(self.click_target)
-            self.click_target = list()
-            self.phase = ''
+            if len(self.click_target) == 4:
+                self.gui.scoreboard_identified(self.click_target)
+                self.click_target = list()
+                self.phase = ''
 
     def attach_scoreboard_manager(self, scoreboard_manager: ScoreboardManager):
         self.scoreboard_manager = scoreboard_manager

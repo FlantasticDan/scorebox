@@ -26,7 +26,7 @@ class ScoreboardManager:
         self.start_frame_processing()
 
     def calculate_scoreboard_dimensions(self):
-        self.aspect_ratio = get_aspect_ratio(self.corner_pin)
+        self.aspect_ratio = get_aspect_ratio(self.corner_pin, self.source.capture_width, self.source.capture_height)
         self.dimensions = get_dimensions(self.corner_pin, self.aspect_ratio)
 
         print(f'Scoreboard Dimensions: {self.dimensions}')
