@@ -6,7 +6,7 @@ header_grey = '#3d3d3d'
 light_blue = '#0095ff'
 dark_blue = '#0062ff'
 
-header_font = 'italic 42px "League Gothic"'
+header_font = '42px "League Gothic Italic"'
 
 main = f'''\
     background-color: {bg_grey};

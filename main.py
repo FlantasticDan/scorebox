@@ -15,6 +15,7 @@ from scoreboard_manager import normalize
 from scoreboard_manager import ScoreboardManager
 
 import styles
+import instructions
 
 class GUI(QWidget):
     def __init__(self):
@@ -46,10 +47,12 @@ class GUI(QWidget):
         self.source = source
         self.camera_manager = CameraManager(self.source)
         self.stream.attach_camera_manager(self.camera_manager)
-    
+
     def scoreboard_identified(self, corner_pin):
         self.scoreboard_manager = ScoreboardManager(self.camera_manager, corner_pin)
         self.stream.attach_scoreboard_manager(self.scoreboard_manager)
+        self.interactive.scoreboard_selected()
+        self.header.set_header('Scoreboard Calibration')
 
 class Header(QFrame):
     def __init__(self):
@@ -71,6 +74,9 @@ class Header(QFrame):
         self.layout.addWidget(self.logo_label)
         self.layout.addWidget(self.header_title)
 
+    def set_header(self, text: str):
+        self.header_title.setText(text)
+
 class Stream(QFrame):
     def __init__(self, gui_parent: GUI):
         QFrame.__init__(self)
@@ -90,6 +96,7 @@ class Stream(QFrame):
         self.stream_viewer = QLabel()
         self.stream_viewer.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         self.stream_viewer.mousePressEvent = self.mouse_click_handler
+        self.stream_viewer.setCursor(Qt.CrossCursor)
 
         self.layout = QHBoxLayout(self)
         self.layout.setAlignment(Qt.AlignCenter)
@@ -152,6 +159,7 @@ class Interactive(QFrame):
         self.gui = gui_parent
 
         self.source_selection = SourceSelection(self)
+        self.scoreboard_selection = ScoreboardInstructions(self)
 
         self.layout = QHBoxLayout(self)
         self.layout.addWidget(self.source_selection)
@@ -159,6 +167,11 @@ class Interactive(QFrame):
     def source_selected(self, source):
         self.gui.source_selected(source)
         self.source_selection.close()
+        self.layout.addWidget(self.scoreboard_selection)
+    
+    def scoreboard_selected(self):
+        self.scoreboard_selection.close()
+        
 
 class SourceSelection(QFrame):
     '''UI for choosing camera source.'''
@@ -197,6 +210,20 @@ class FrameSignal(QObject):
     '''Qt Required Signal Wrapper in QObject for Frame Draw Update Signal'''
     frame_signal = Signal(QImage)
 
+class ScoreboardInstructions(QFrame):
+    def __init__(self, interactive):
+        QFrame.__init__(self)
+
+        self.interactive = interactive
+
+        self.instructions = QLabel(text=instructions.corner_selection)
+        self.instructions.setStyleSheet(styles.instructions)
+        self.instructions.setAlignment(Qt.AlignCenter)
+
+        self.layout = QVBoxLayout(self)
+        self.layout.setAlignment(Qt.AlignTop)
+        self.layout.addWidget(self.instructions)
+
 if __name__ == '__main__':
     QApplication.setAttribute(Qt.ApplicationAttribute.AA_EnableHighDpiScaling, True)
 
@@ -211,4 +238,4 @@ if __name__ == '__main__':
 
     gui = GUI()
 
-    app.exec_()
+    sys.exit(app.exec_())
