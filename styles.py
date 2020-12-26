@@ -45,3 +45,21 @@ header_label = f'''\
     font: {header_font};
     color: white;
 '''
+
+corner_title = f'''\
+    QLabel{{
+        font: 16pt "Staatliches";
+        color: white;
+        background-color: {header_grey};
+        padding: 10px;
+        border: 4px solid {header_grey};
+    }}
+
+    QLabel[next=true]{{
+        border: 4px solid {light_blue};
+    }}
+
+    QLabel[selected=true]{{
+        background-color: {light_blue};
+    }}
+'''

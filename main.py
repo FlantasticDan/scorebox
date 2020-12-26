@@ -48,6 +48,9 @@ class GUI(QWidget):
         self.camera_manager = CameraManager(self.source)
         self.stream.attach_camera_manager(self.camera_manager)
 
+    def scoreboard_clicked(self, corner, index):
+        self.interactive.scoreboard_selection.scoreboard_clicked(corner, index)
+
     def scoreboard_identified(self, corner_pin):
         self.scoreboard_manager = ScoreboardManager(self.camera_manager, corner_pin)
         self.stream.attach_scoreboard_manager(self.scoreboard_manager)
@@ -143,6 +146,8 @@ class Stream(QFrame):
 
             self.click_target.append(click)
 
+            self.gui.scoreboard_clicked(f'({x}, {y})', len(self.click_target) - 1)
+
             if len(self.click_target) == 4:
                 self.gui.scoreboard_identified(self.click_target)
                 self.click_target = list()
@@ -168,10 +173,9 @@ class Interactive(QFrame):
         self.gui.source_selected(source)
         self.source_selection.close()
         self.layout.addWidget(self.scoreboard_selection)
-    
+
     def scoreboard_selected(self):
         self.scoreboard_selection.close()
-        
 
 class SourceSelection(QFrame):
     '''UI for choosing camera source.'''
@@ -223,6 +227,56 @@ class ScoreboardInstructions(QFrame):
         self.layout = QVBoxLayout(self)
         self.layout.setAlignment(Qt.AlignTop)
         self.layout.addWidget(self.instructions)
+
+        self.row = QFrame()
+        self.row_layout = QHBoxLayout(self.row)
+        self.row_layout.setAlignment(Qt.AlignCenter)
+        self.row_layout.setSpacing(50)
+
+        self.corner_labels = list()
+        corners = ['Top Left', 'Top Right', 'Bottom Left', 'Bottom Left']
+        for i, corner in enumerate(corners):
+            self.corner_labels.append(CornerUI(corner))
+            self.row_layout.addWidget(self.corner_labels[i])
+        self.layout.addWidget(self.row)
+        self.corner_labels[0].on_deck()
+
+    def scoreboard_clicked(self, corner, index):
+        self.corner_labels[index].set_corner(corner)
+        if index < 3:
+            self.corner_labels[index + 1].on_deck()
+
+class CornerUI(QFrame):
+    def __init__(self, corner):
+        QFrame.__init__(self)
+
+        self.corner = '()'
+        self.label = corner
+
+        self.layout = QVBoxLayout(self)
+        self.layout.setAlignment(Qt.AlignCenter)
+        self.title = QLabel(text=f'{self.label}\n{self.corner}')
+        self.title.setAlignment(Qt.AlignCenter)
+        self.title.setStyleSheet(styles.corner_title)
+
+        self.title.setMaximumWidth(150)
+        self.title.setMinimumWidth(150)
+
+        self.layout.addWidget(self.title)
+
+    def refresh_style(self):
+        self.title.style().unpolish(self.title)
+        self.title.style().polish(self.title)
+
+    def on_deck(self):
+        self.title.setProperty('next', True)
+        self.refresh_style()
+
+    def set_corner(self, corner):
+        self.corner = corner
+        self.title.setProperty('selected', True)
+        self.title.setText(f'{self.label}\n{self.corner}')
+        self.refresh_style()
 
 if __name__ == '__main__':
     QApplication.setAttribute(Qt.ApplicationAttribute.AA_EnableHighDpiScaling, True)
