@@ -1,0 +1,166 @@
+@import url('./fonts/fonts.css');
+
+:root{
+    --dark-grey: #121212;
+    --less-dark-grey: #424242;
+    --mid-grey: #BDBDBD;
+    --light-grey: #FAFAFA;
+    --blue-primary: #2962ff;
+    --blue-light: #768fff;
+    --blue-dark: #0039cb;
+    --green-primary: #00ce7c;
+    --green-light: #5fffac;
+    --green-dark: #009c4f;
+    --red-primary: #ff1824;
+    --red-light: #ff604f;
+    --red-dark: #c30000;
+}
+
+body{
+    background-color: var(--dark-grey);
+    margin: 0;
+}
+
+h1{
+    font-family: 'Source Code Pro';
+}
+
+#initial{
+    height: 100vh;
+}
+
+.center-container{
+    height: 100%;
+    display: flex;
+}
+
+.center-contents{
+    margin: auto;
+    width: 100%;
+}
+
+#main-logo{
+    height: 85px;
+    margin: auto;
+    display: block;
+}
+
+#build-tag{
+    font-family: 'Source Code Pro';
+    color: white;
+    font-size: 0.8em;
+    position: absolute;
+    text-align: right;
+    bottom: 0px;
+    right: 0px;
+}
+
+.ui-text{
+    color: white;
+    font-family: 'Source Sans Pro';
+    font-weight: 500;
+    font-size: 1.25em;
+}
+
+.instructions{
+    text-align: center;
+    padding: 1em;
+    color: var(--mid-grey);
+    margin: 0;
+}
+
+.camera-source-btn{
+    min-width: 170px;
+}
+
+button.btn, .btn:active, .btn:focus{
+    padding: 0.5em;
+    color: white;
+    background-color: var(--blue-primary);
+    border: 0px solid;
+    font-weight: 600;
+    outline: 0px;
+    cursor: pointer;
+}
+
+button.btn:hover{
+    background-color: var(--blue-dark);
+}
+
+button.btn.green{
+    background-color: var(--green-primary);
+}
+
+button.btn.green:hover{
+    background-color: var(--green-dark);
+}
+
+button.btn.red{
+    background-color: var(--red-primary);
+}
+
+button.btn.red:hover{
+    background-color: var(--red-dark);
+}
+
+button.btn:disabled, button.btn:disabled:hover{
+    color: var(--less-dark-grey);
+    border: 1px solid var(--less-dark-grey);
+    background-color: transparent;
+    cursor: not-allowed;
+}
+
+#camera-sources{
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+    flex-wrap: wrap;
+}
+
+#header{
+    background-color: var(--less-dark-grey);
+    padding: 1em;
+}
+
+#header-logo{
+    height: 35px;
+}
+
+#corners-container{
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: 1em;
+    margin: auto;
+    width: fit-content;
+    place-items: center;
+}
+
+#next-corner{
+    color: white;
+    font-family: "Source Sans Pro";
+    font-size: 0.8em;
+    text-align: center;
+    border: 2px solid var(--blue-primary);
+    padding: 0.5em 1em;
+    text-transform: uppercase;
+}
+
+#next-corner-id{
+    font-size: 2em;
+    font-weight: 600;
+}
+
+.hide{
+    display: none;
+}
+
+#raw-source{
+    margin: auto;
+    max-width: 100%;
+    max-height: 520px;
+    cursor: crosshair;
+}
+
+.center{
+    text-align: center;
+}

@@ -1,0 +1,23 @@
+{
+  "name": "scorebox",
+  "version": "0.1.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FlantasticDan/scorebox.git"
+  },
+  "author": "Daniel Flanagan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/FlantasticDan/scorebox/issues"
+  },
+  "homepage": "https://github.com/FlantasticDan/scorebox#readme",
+  "devDependencies": {
+    "electron": "^11.2.1"
+  }
+}

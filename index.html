@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' unsafe-inline"> -->
+
+        <link rel="stylesheet" href="./ui/main.css">
+        <script src="./ui/js/camera-source.js"></script>
+        <script src="./ui/js/corner-selection.js"></script>
+    </head>
+    <body>
+
+        <div id="initial">
+            <div class="center-container">
+                <div class="center-contents">
+                    <img src="./ui/img/logo-white.png" id="main-logo">
+                    <div id="camera-instructions" class="ui-text instructions">
+                        Select a Camera Source
+                    </div>
+                    <div id="camera-sources">
+                        <button class="ui-text btn camera-source-btn">Source 1</button>
+                        <button class="ui-text btn camera-source-btn">Source 2</button>
+                        <button class="ui-text btn camera-source-btn">Source 3</button>
+                    </div>
+                </div>
+            </div>
+            <div id="build-tag">
+                v0.1.0 (012621)
+            </div>
+        </div>
+
+        <div id="header" class="hide">
+            <img src="./ui/img/logo-white.png" id="header-logo">
+        </div>
+
+        <div id="select-scoreboard" class="hide">
+
+            <div class="center"><video id="raw-source"></video></div>
+
+            <p class="ui-text instructions">Select the Scoreboard's Corners</p>
+            <div id='corners-container'>
+                <div id="next-corner">
+                    Click the<br>
+                    <span id="next-corner-id">Top Left</span><br>
+                    Corner
+                </div>
+                <div>
+                    <button class="ui-text btn red" onclick="ResetCorners()">
+                        Reset
+                    </button>
+                </div>
+                <div>
+                    <button class="ui-text btn green" disabled id="corners-continue-btn">
+                        Continue
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </body>
+</html>
