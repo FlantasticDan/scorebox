@@ -73,7 +73,17 @@ function ClickedCorner(e) {
             nextCorner.innerText = cornerIDs[cornerIndex]
         }
     }
-    
-
 }
 
+function CornersContinue() {
+    payload = {
+        corner_pin: corners,
+        width: rawVideo.videoWidth,
+        height: rawVideo.videoHeight
+    }
+    fetch('http://127.0.0.1:5000/cornerpin', {
+        method: 'POST',
+        cache: 'no-cache',
+        body: JSON.stringify(payload)
+    }).then()
+}
