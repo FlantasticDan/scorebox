@@ -114,15 +114,20 @@ function DrawCornersLine(x, y) {
     context.stroke()
 }
 
-function CornersContinue() {
+function CornersContinue(btn) {
+    btn.disabled = true
     payload = {
         corner_pin: corners,
         width: rawVideo.videoWidth,
         height: rawVideo.videoHeight
     }
-    fetch('http://127.0.0.1:5000/cornerpin', {
+    fetch(`${flask}/cornerpin`, {
         method: 'POST',
         cache: 'no-cache',
         body: JSON.stringify(payload)
-    }).then()
+    }).then(res => {
+        res.json().then(data => {
+            startFrameProcessor(data)
+        })
+    })
 }

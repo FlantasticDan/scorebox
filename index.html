@@ -5,6 +5,7 @@
         <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' unsafe-inline"> -->
 
         <link rel="stylesheet" href="./ui/main.css">
+        <script src="./ui/js/master.js"></script>
     </head>
     <body>
 
@@ -38,6 +39,7 @@
             <div class="center overlay-container">
                 <video id="raw-source"></video>
                 <canvas class="overlay" id="corner-canvas"></canvas>
+                <canvas class="hide" id="raw-canvas"></canvas>
             </div>
 
             
@@ -58,7 +60,7 @@
                     </button>
                 </div>
                 <div>
-                    <button class="ui-text btn green" disabled id="corners-continue-btn">
+                    <button class="ui-text btn green" disabled id="corners-continue-btn" onclick="CornersContinue(this)">
                         Continue
                     </button>
                 </div>
@@ -66,7 +68,18 @@
 
         </div>
 
+        <div id="select-fields" class="hide">
+
+            <p class="ui-text instructions">Select and Identify the Scoreboard's Fields</p>
+
+            <div class="center">
+                <img id="distorted-source">
+            </div>
+
+        </div>
+
         <script src="./ui/js/camera-source.js"></script>
-        <script src="./ui/js/corner-selection.js"></script>
+        <script defer src="./ui/js/corner-selection.js"></script>
+        <script defer src="./ui/js/frame-processor.js"></script>
     </body>
 </html>

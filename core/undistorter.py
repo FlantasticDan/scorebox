@@ -106,5 +106,9 @@ def get_transform(corner_pin: List[Tuple[int, int]], width: int=1280, height: in
 
     return transform_matrix, dimensions
 
-def undistorter(transform_matrix, dimensions):
-    pass
+def undistorter(img_binary, transform_matrix, dimensions):
+    array = np.frombuffer(img_binary, np.uint8)
+    img = cv2.imdecode(array, cv2.IMREAD_COLOR)
+    undistort = cv2.warpPerspective(img, transform_matrix, dimensions)
+
+    return cv2.imencode('.png', undistort)
