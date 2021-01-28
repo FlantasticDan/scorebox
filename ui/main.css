@@ -128,7 +128,7 @@ button.btn:disabled, button.btn:disabled:hover{
 
 #corners-container{
     display: grid;
-    grid-template-columns: repeat(3, auto);
+    grid-template-columns: auto auto auto;
     gap: 1em;
     margin: auto;
     width: fit-content;
@@ -143,6 +143,9 @@ button.btn:disabled, button.btn:disabled:hover{
     border: 2px solid var(--blue-primary);
     padding: 0.5em 1em;
     text-transform: uppercase;
+    display: flex;
+    place-items: center;
+    gap: 0.4em;
 }
 
 #next-corner-id{
@@ -151,16 +154,31 @@ button.btn:disabled, button.btn:disabled:hover{
 }
 
 .hide{
-    display: none;
+    display: none !important;
 }
 
 #raw-source{
     margin: auto;
     max-width: 100%;
     max-height: 520px;
+    /* cursor: crosshair; */
+}
+
+#corner-canvas{
     cursor: crosshair;
 }
 
 .center{
     text-align: center;
+}
+
+.overlay-container{
+    position: relative;
+}
+
+.overlay{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0%);
 }

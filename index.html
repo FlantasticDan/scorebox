@@ -6,7 +6,6 @@
 
         <link rel="stylesheet" href="./ui/main.css">
         <script src="./ui/js/camera-source.js"></script>
-        <script src="./ui/js/corner-selection.js"></script>
     </head>
     <body>
 
@@ -25,7 +24,7 @@
                 </div>
             </div>
             <div id="build-tag">
-                v0.1.0 (012621)
+                v0.1.0 (012721)
             </div>
         </div>
 
@@ -35,14 +34,24 @@
 
         <div id="select-scoreboard" class="hide">
 
-            <div class="center"><video id="raw-source"></video></div>
-
             <p class="ui-text instructions">Select the Scoreboard's Corners</p>
+
+            <div class="center overlay-container">
+                <video id="raw-source"></video>
+                <canvas class="overlay" id="corner-canvas"></canvas>
+            </div>
+
+            
             <div id='corners-container'>
                 <div id="next-corner">
-                    Click the<br>
-                    <span id="next-corner-id">Top Left</span><br>
-                    Corner
+                    <span>Click the</span>
+                    <span id="next-corner-id">Top Left</span>
+                    <span>Corner</span>
+                </div>
+                <div class="hide" id="new-scoreboard-btn">
+                    <button class="ui-text btn">
+                        Add New Scoreboard
+                    </button>
                 </div>
                 <div>
                     <button class="ui-text btn red" onclick="ResetCorners()">
@@ -58,5 +67,6 @@
 
         </div>
 
+        <script src="./ui/js/corner-selection.js"></script>
     </body>
 </html>
