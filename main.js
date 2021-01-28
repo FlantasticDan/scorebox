@@ -11,6 +11,8 @@ function createWindow () {
   })
 
   win.removeMenu()
+  win.setTitle('ScoreBox')
+  win.setResizable(false)
   win.loadFile('index.html')
   win.webContents.openDevTools()
 }
