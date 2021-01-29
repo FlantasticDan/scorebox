@@ -25,15 +25,16 @@ def set_corner_pins():
     }
     return jsonify(ret)
 
-# @app.route('/frame', methods=['POST'])
-# def frame_process():
-#     start = time.time()
-#     global transform_matrix
-#     global dimensions
-#     img = undistorter(request.get_data(), transform_matrix, dimensions)
-#     b = io.BytesIO(img[1].tobytes())
-#     print(time.time() - start)
-#     return send_file(b, 'image/png')
+@app.route('/frame', methods=['POST'])
+def frame_process():
+    start = time.time()
+    global transform_matrix
+    global dimensions
+    img = undistorter(request.get_data(), transform_matrix, dimensions)
+    img_str = str(base64.b64encode(img[1]), 'utf-8')
+    payload = f'data:image/png;base64, {img_str}'
+    socketio.emit('undistort', payload, broadcast=True)
+    return 'OK'
 
 @socketio.event
 def frame(data):

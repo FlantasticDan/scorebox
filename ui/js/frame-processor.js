@@ -27,7 +27,6 @@ function startFrameProcessor(dimensions) {
     socket.on('undistort', data => {
         console.log('new frame')
         distortedVideo.src = data
-        ProcessFrame()
     })
 
 
@@ -40,10 +39,11 @@ function ProcessFrame() {
     rawCanvas.getContext('2d').drawImage(rawVideo, 0, 0, rawCanvas.width, rawCanvas.height)
     rawCanvas.toBlob(blob => {
         blob.arrayBuffer().then(arraybuffer => {
-            console.log('sending frame')
-            socket.emit('frame', arraybuffer)
-            console.log('sent frame')
-            // ProcessFrame()
+            fetch(`${flask}/frame`, {
+                method: 'POST',
+                cache: 'no-cache',
+                body: arraybuffer
+            }).then(res => {ProcessFrame()})
         })
     })
 
