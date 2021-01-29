@@ -1,6 +1,13 @@
 {
     "configurations": [
         {
+            "name": "Python: Main",
+            "type": "python",
+            "request": "launch",
+            "program": "core/main.py",
+            "console": "integratedTerminal"
+        },
+        {
             "name": "Python: Flask",
             "type": "python",
             "request": "launch",

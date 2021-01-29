@@ -19,5 +19,8 @@
   "homepage": "https://github.com/FlantasticDan/scorebox#readme",
   "devDependencies": {
     "electron": "^11.2.1"
+  },
+  "dependencies": {
+    "socket.io-client": "^3.1.0"
   }
 }

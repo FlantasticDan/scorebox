@@ -36,7 +36,7 @@ const launchPython = () => {
   let python = path.join(__dirname, 'venv', 'Scripts', 'python.exe')
   let script = path.join(__dirname, 'core', 'main.py')
   console.log(script)
-  pythonCore = require('child_process').spawn(python, [script])
+  // pythonCore = require('child_process').spawn(python, [script])
 }
 
 const killPython = () => {

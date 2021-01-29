@@ -1,7 +1,10 @@
+const io = require('socket.io-client')
+
 const rawCanvas = document.getElementById('raw-canvas')
 const distortedVideo = document.getElementById('distorted-source')
 
 let frameInterval
+let socket
 
 function startFrameProcessor(dimensions) {
 
@@ -14,7 +17,22 @@ function startFrameProcessor(dimensions) {
     rawCanvas.width = rawVideo.videoWidth
     rawCanvas.height = rawVideo.videoHeight
 
-    ProcessFrame()
+    socket = io(flask)
+    console.log(socket)
+
+    socket.on('connect', () => {
+        ProcessFrame()
+    })
+
+    socket.on('undistort', data => {
+        console.log('new frame')
+        distortedVideo.src = data
+        ProcessFrame()
+    })
+
+
+
+    // ProcessFrame()
 
 }
 
@@ -22,17 +40,10 @@ function ProcessFrame() {
     rawCanvas.getContext('2d').drawImage(rawVideo, 0, 0, rawCanvas.width, rawCanvas.height)
     rawCanvas.toBlob(blob => {
         blob.arrayBuffer().then(arraybuffer => {
-            fetch(`${flask}/frame`, {
-                method: 'POST',
-                cache: 'no-cache',
-                body: arraybuffer
-            }).then(res => {
-                res.blob().then(img => {
-                    distortedVideo.src = URL.createObjectURL(img)
-                    // setTimeout(ProcessFrame, 55)
-                    ProcessFrame()
-                })
-            })
+            console.log('sending frame')
+            socket.emit('frame', arraybuffer)
+            console.log('sent frame')
+            // ProcessFrame()
         })
     })
 
